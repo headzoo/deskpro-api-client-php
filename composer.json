@@ -1,0 +1,23 @@
+{
+  "name": "deskpro/api-client-php",
+  "description": "PHP API client for use with the Deskpro v2 API",
+  "type": "library",
+  "keywords": [
+    "deskpro",
+    "api"
+  ],
+  "homepage": "https://github.com/deskpro/api-client-php",
+  "license": "BSD-3-Clause",
+  "require": {
+    "php": ">=5.5",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "2.5.7"
+  },
+  "autoload": {
+    "psr-0": {
+      "DeskPRO\\": "src/"
+    }
+  }
+}
