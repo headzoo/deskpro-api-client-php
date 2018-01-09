@@ -33,6 +33,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -292,16 +293,17 @@ class DeskPROClient
     {
         $url = sprintf('%s%s/%s', $this->helpdeskUrl, self::API_PATH, trim($endpoint, '/'));
         $headers = $this->makeHeaders($headers);
-        if ($body !== null && !is_scalar($body)) {
+        if (is_array($body) && isset($body['multipart'])) {
+            $body = new MultipartStream($body['multipart']);
+        } else if ($body !== null && !is_scalar($body)) {
             $body = json_encode($body);
         }
-        $request = new Request($method, $url, $headers, $body);
-        $this->logger->debug(sprintf('DeskPROClient: %s %s',$method, $url), [
+        $this->logger->debug(sprintf('DeskPROClient: %s %s', $method, $url), [
             'headers' => $headers,
             'body'    => $body
         ]);
         
-        return $request;
+        return new Request($method, $url, $headers, $body);
     }
 
     /**
@@ -310,12 +312,12 @@ class DeskPROClient
      */
     protected function makeResponse($body)
     {
-        $body = json_decode($body, true);
-        if ($body === false) {
+        $decoded = json_decode($body, true);
+        if (!$decoded) {
             return $body;
         }
 
-        return new Response($body['data'], $body['meta'], $body['linked']);
+        return new Response($decoded['data'], $decoded['meta'], $decoded['linked']);
     }
 
     /**

@@ -77,6 +77,35 @@ try {
 }
 ```
 
+Uploading a file:
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use DeskPRO\API\Exception\APIException;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$client = new DeskPROClient('http://deskpro-dev.com');
+$client->setAuthKey(1, 'dev-admin-code');
+
+try {
+    $resp = $client->post('/blobs/temp', [
+        'multipart' => [
+            [
+                'name'     => 'file',
+                'filename' => 'test.gif',
+                'contents' => fopen('test.gif', 'r')
+            ]
+        ]
+    ]);
+    print_r($resp->getData());
+} catch (APIException $e) {
+    echo $e->getMessage();
+}
+```
+
+
 ## Customizing Guzzle
 
 ```php
