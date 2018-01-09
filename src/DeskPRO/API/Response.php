@@ -31,7 +31,7 @@ namespace DeskPRO\API;
 /**
  * Stores the response from the API.
  */
-class Response implements \Iterator
+class Response implements \ArrayAccess, \Iterator, \Countable
 {
     /**
      * @var array
@@ -54,6 +54,11 @@ class Response implements \Iterator
     protected $it = 0;
 
     /**
+     * @var int
+     */
+    protected $count = 0;
+
+    /**
      * Constructor
      * 
      * @param array $data
@@ -65,6 +70,9 @@ class Response implements \Iterator
         $this->data   = $data;
         $this->meta   = $meta;
         $this->linked = $linked;
+        if (is_array($data)) {
+            $this->count = count($data);
+        }
     }
 
     /**
@@ -92,6 +100,53 @@ class Response implements \Iterator
     }
 
     /**
+     * Implements ArrayAccess::offsetSet
+     * 
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    /**
+     * Implements ArrayAccess::offsetExists
+     * 
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->data[$offset]);
+    }
+
+    /**
+     * Implements ArrayAccess::offsetUnset
+     * 
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->data[$offset]);
+    }
+
+    /**
+     * Implements ArrayAccess::offsetGet
+     * 
+     * @param mixed $offset
+     * @return null
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
+
+    /**
      * Implements Iterator::rewind
      */
     public function rewind()
@@ -101,6 +156,8 @@ class Response implements \Iterator
 
     /**
      * Implements Iterator::current
+     * 
+     * @return mixed
      */
     public function current()
     {
@@ -109,6 +166,8 @@ class Response implements \Iterator
 
     /**
      * Implements Iterator::key
+     * 
+     * @return int
      */
     public function key()
     {
@@ -125,9 +184,21 @@ class Response implements \Iterator
 
     /**
      * Implements Iterator::valid
+     * 
+     * @return bool
      */
     public function valid()
     {
         return isset($this->data[$this->it]);
+    }
+
+    /**
+     * Implements Countable::count
+     * 
+     * @return int
+     */
+    public function count()
+    {
+        return $this->count;
     }
 }
