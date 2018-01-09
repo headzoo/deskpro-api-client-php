@@ -200,3 +200,9 @@ $client = new DeskPROClient('http://deskpro-dev.com', $httpClient);
 // or use the setter method.
 // $client->setHTTPClient($guzzle);
 ```
+
+## Testing
+
+```
+composer test
+```
