@@ -86,11 +86,11 @@ use GuzzleHttp\Client;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$guzzle = new Client([
+$httpClient = new Client([
     'timeout' => 60
 ]);
-$client = new DeskPROClient('http://deskpro-dev.com', $guzzle);
+$client = new DeskPROClient('http://deskpro-dev.com', $httpClient);
 
 // or use the setter method.
-// $client->setClient($guzzle);
+// $client->setHTTPClient($guzzle);
 ```

@@ -59,7 +59,7 @@ class DeskPROClient
     /**
      * @var ClientInterface
      */
-    protected $client;
+    protected $httpClient;
 
     /**
      * @var string
@@ -75,13 +75,13 @@ class DeskPROClient
      * Constructor
      * 
      * @param string $helpdeskUrl
-     * @param ClientInterface $client
+     * @param ClientInterface $httpClient
      * @param LoggerInterface $logger
      */
-    public function __construct($helpdeskUrl, ClientInterface $client = null, LoggerInterface $logger = null)
+    public function __construct($helpdeskUrl, ClientInterface $httpClient = null, LoggerInterface $logger = null)
     {
         $this->setHelpdeskUrl($helpdeskUrl);
-        $this->setClient($client ?: new Client());
+        $this->setHTTPClient($httpClient ?: new Client());
         $this->setLogger($logger ?: new NullLogger());
     }
 
@@ -107,18 +107,18 @@ class DeskPROClient
     /**
      * @return ClientInterface
      */
-    public function getClient()
+    public function getHTTPClient()
     {
-        return $this->client;
+        return $this->httpClient;
     }
 
     /**
-     * @param ClientInterface $client
+     * @param ClientInterface $httpClient
      * @return $this
      */
-    public function setClient(ClientInterface $client)
+    public function setHTTPClient(ClientInterface $httpClient)
     {
-        $this->client = $client;
+        $this->httpClient = $httpClient;
         
         return $this;
     }
@@ -239,7 +239,7 @@ class DeskPROClient
     {
         try {
             $req = $this->makeRequest($method, $endpoint, $body, $headers);
-            $res = $this->client->send($req);
+            $res = $this->httpClient->send($req);
             
             return $this->makeResponse($res->getBody());
         } catch (ClientException $e) {
@@ -258,7 +258,7 @@ class DeskPROClient
     {
         $req = $this->makeRequest($method, $endpoint, $body, $headers);
         
-        return $this->client->sendAsync($req)
+        return $this->httpClient->sendAsync($req)
             ->then(function(ResponseInterface $resp) {
                 return $this->makeResponse($resp->getBody());
             }, function (RequestException $e) {
