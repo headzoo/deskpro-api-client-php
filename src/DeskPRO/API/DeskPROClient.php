@@ -154,6 +154,14 @@ class DeskPROClient
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultHeaders()
+    {
+        return $this->defaultHeaders;
+    }
+
+    /**
      * @param array $defaultHeaders
      * @return $this
      */
