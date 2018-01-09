@@ -105,7 +105,35 @@ try {
 }
 ```
 
-Adding default headers:
+Array access and iterator:
+
+The API response implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
+[Iterator](http://php.net/manual/en/class.iterator.php), and [Countable](http://php.net/manual/en/class.countable.php).
+Only applicable when the API returns an array.
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use DeskPRO\API\Exception\APIException;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$client = new DeskPROClient('http://deskpro-dev.com');
+$client->setAuthKey(1, 'dev-admin-code');
+
+try {
+    $resp = $client->get('/articles');
+    echo "Found " . count($resp) . " articles\n";
+    foreach($resp as $article) {
+        echo $article['title'] . "\n";
+    }
+} catch (APIException $e) {
+    echo $e->getMessage();
+}
+```
+
+
+## Adding default headers
 
 ```php
 <?php
@@ -128,7 +156,7 @@ try {
 }
 ```
 
-Logging:
+## Logging
 
 ```php
 <?php
