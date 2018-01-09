@@ -28,7 +28,10 @@
 
 namespace DeskPRO\API;
 
-class Response
+/**
+ * Stores the response from the API.
+ */
+class Response implements \Iterator
 {
     /**
      * @var array
@@ -44,6 +47,11 @@ class Response
      * @var array
      */
     protected $linked = [];
+
+    /**
+     * @var int
+     */
+    protected $it = 0;
 
     /**
      * Constructor
@@ -81,5 +89,45 @@ class Response
     public function getLinked()
     {
         return $this->linked;
+    }
+
+    /**
+     * Implements Iterator::rewind
+     */
+    public function rewind()
+    {
+        $this->it = 0;
+    }
+
+    /**
+     * Implements Iterator::current
+     */
+    public function current()
+    {
+        return $this->data[$this->it];
+    }
+
+    /**
+     * Implements Iterator::key
+     */
+    public function key()
+    {
+        return $this->it;
+    }
+
+    /**
+     * Implements Iterator::next
+     */
+    public function next()
+    {
+        ++$this->it;
+    }
+
+    /**
+     * Implements Iterator::valid
+     */
+    public function valid()
+    {
+        return isset($this->data[$this->it]);
     }
 }
