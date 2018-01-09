@@ -51,6 +51,26 @@ class DeskPROClient
      * Base API path
      */
     const API_PATH = '/api/v2';
+
+    /**
+     * The authentication header
+     */
+    const AUTH_HEADER = 'Authorization';
+
+    /**
+     * Key to use for token authentication
+     */
+    const AUTH_TOKEN_KEY = 'token';
+
+    /**
+     * Key to use for key authentication
+     */
+    const AUTH_KEY_KEY = 'key';
+
+    /**
+     * Logs are prefixed with this string
+     */
+    const LOG_PREFIX = 'DeskPROClient';
     
     /**
      * @var string
@@ -350,11 +370,11 @@ class DeskPROClient
     protected function makeHeaders(array $headers = [])
     {
         $headers = array_merge($this->defaultHeaders, $headers);
-        if (!isset($headers['Authorization'])) {
+        if (!isset($headers[self::AUTH_HEADER])) {
             if ($this->authToken) {
-                $headers['Authorization'] = sprintf('token %s', $this->authToken);
+                $headers[self::AUTH_HEADER] = sprintf('%s %s', self::AUTH_TOKEN_KEY, $this->authToken);
             } else if ($this->authKey) {
-                $headers['Authorization'] = sprintf('key %s', $this->authKey);
+                $headers[self::AUTH_HEADER] = sprintf('%s %s', self::AUTH_KEY_KEY, $this->authKey);
             }
         }
 
@@ -378,7 +398,7 @@ class DeskPROClient
         } else if ($body !== null && !is_scalar($body)) {
             $body = json_encode($body);
         }
-        $this->logger->debug(sprintf('DeskPROClient: %s %s', $method, $url), [
+        $this->logger->debug(sprintf('%s: %s %s', self::LOG_PREFIX, $method, $url), [
             'headers' => $headers,
             'body'    => $body
         ]);
