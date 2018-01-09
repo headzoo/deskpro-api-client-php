@@ -80,9 +80,9 @@ class DeskPROClient
     /**
      * Constructor
      * 
-     * @param string $helpdeskUrl
-     * @param ClientInterface $httpClient
-     * @param LoggerInterface $logger
+     * @param string          $helpdeskUrl The base URL to the DeskPRO instance
+     * @param ClientInterface $httpClient  HTTP client used to make requests
+     * @param LoggerInterface $logger      Used to log requests
      */
     public function __construct($helpdeskUrl, ClientInterface $httpClient = null, LoggerInterface $logger = null)
     {
@@ -92,6 +92,8 @@ class DeskPROClient
     }
 
     /**
+     * Returns the base URL to the DeskPRO instance
+     * 
      * @return string
      */
     public function getHelpdeskUrl()
@@ -100,7 +102,10 @@ class DeskPROClient
     }
     
     /**
-     * @param string $helpdeskUrl
+     * Sets the base URL to the DeskPRO instance
+     * 
+     * @param string $helpdeskUrl The base URL to the DeskPRO instance
+     * 
      * @return $this
      */
     public function setHelpdeskUrl($helpdeskUrl)
@@ -111,6 +116,8 @@ class DeskPROClient
     }
 
     /**
+     * Returns the HTTP client used to make requests
+     * 
      * @return ClientInterface
      */
     public function getHTTPClient()
@@ -119,7 +126,10 @@ class DeskPROClient
     }
 
     /**
-     * @param ClientInterface $httpClient
+     * Sets the HTTP client used to make requests
+     * 
+     * @param ClientInterface $httpClient HTTP client used to make requests
+     * 
      * @return $this
      */
     public function setHTTPClient(ClientInterface $httpClient)
@@ -130,8 +140,11 @@ class DeskPROClient
     }
 
     /**
-     * @param int $personId
-     * @param string $token
+     * Sets the person ID and authentication token
+     * 
+     * @param int    $personId The ID of the person being authenticated
+     * @param string $token    The authentication token
+     * 
      * @return $this
      */
     public function setAuthToken($personId, $token)
@@ -142,8 +155,11 @@ class DeskPROClient
     }
 
     /**
-     * @param int $personId
-     * @param string $key
+     * Sets the person ID and authentication key
+     * 
+     * @param int    $personId The ID of the person being authenticated
+     * @param string $key      The authentication key
+     * 
      * @return $this
      */
     public function setAuthKey($personId, $key)
@@ -154,6 +170,8 @@ class DeskPROClient
     }
 
     /**
+     * Returns the headers sent with each request
+     * 
      * @return array
      */
     public function getDefaultHeaders()
@@ -162,7 +180,10 @@ class DeskPROClient
     }
 
     /**
-     * @param array $defaultHeaders
+     * Sets the headers sent with each request
+     * 
+     * @param array $defaultHeaders The headers to send
+     * 
      * @return $this
      */
     public function setDefaultHeaders(array $defaultHeaders)
@@ -173,7 +194,10 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
+     * Sends a GET request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * 
      * @return Response
      * @throws Exception\APIException
      */
@@ -183,7 +207,10 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
+     * Sends an asynchronous GET request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * 
      * @return PromiseInterface
      */
     public function getAsync($endpoint)
@@ -192,8 +219,11 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
-     * @param mixed $body
+     * Sends a POST request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * 
      * @return Response
      * @throws Exception\APIException
      */
@@ -203,8 +233,11 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
-     * @param mixed $body
+     * Sends an asynchronous POST request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * 
      * @return PromiseInterface
      */
     public function postAsync($endpoint, $body = null)
@@ -213,8 +246,11 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
-     * @param mixed $body
+     * Sends a PUT request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * 
      * @return Response
      * @throws Exception\APIException
      */
@@ -224,8 +260,11 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
-     * @param mixed $body
+     * Sends an asynchronous PUT request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * 
      * @return PromiseInterface
      */
     public function putAsync($endpoint, $body = null)
@@ -234,7 +273,10 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
+     * Sends a DELETE request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * 
      * @return Response
      * @throws Exception\APIException
      */
@@ -244,7 +286,10 @@ class DeskPROClient
     }
 
     /**
-     * @param string $endpoint
+     * Sends an asynchronous DELETE request to the API
+     * 
+     * @param string $endpoint The API endpoint (path)
+     * 
      * @return PromiseInterface
      */
     public function deleteAsync($endpoint)
@@ -253,10 +298,13 @@ class DeskPROClient
     }
 
     /**
-     * @param string $method
-     * @param string $endpoint
-     * @param mixed $body
-     * @param array $headers
+     * Sends a request to the API
+     * 
+     * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * @param array  $headers  Additional headers to send with the request
+     * 
      * @return Response
      * @throws Exception\APIException
      */
@@ -273,10 +321,13 @@ class DeskPROClient
     }
 
     /**
-     * @param $method
-     * @param $endpoint
-     * @param null $body
-     * @param array $headers
+     * Sends an asynchronous request to the API
+     *
+     * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
+     * @param string $endpoint The API endpoint (path)
+     * @param mixed  $body     Values sent in the request body
+     * @param array  $headers  Additional headers to send with the request
+     * 
      * @return PromiseInterface
      */
     public function requestAsync($method, $endpoint, $body = null, array $headers = [])
@@ -293,6 +344,7 @@ class DeskPROClient
 
     /**
      * @param array $headers
+     * 
      * @return array
      */
     protected function makeHeaders(array $headers = [])
@@ -314,6 +366,7 @@ class DeskPROClient
      * @param string $endpoint
      * @param mixed $body
      * @param array $headers
+     * 
      * @return Request
      */
     protected function makeRequest($method, $endpoint, $body = null, array $headers = [])
@@ -335,6 +388,7 @@ class DeskPROClient
 
     /**
      * @param string $body
+     * 
      * @return Response|mixed
      */
     protected function makeResponse($body)
@@ -349,6 +403,7 @@ class DeskPROClient
 
     /**
      * @param string $body
+     * 
      * @return Exception\APIException
      */
     protected function makeException($body)
