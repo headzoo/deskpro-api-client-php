@@ -35,12 +35,20 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Makes requests to the DeskPRO API.
  */
 class DeskPROClient
 {
+    use LoggerAwareTrait;
+
+    /**
+     * Base API path
+     */
     const API_PATH = '/api/v2';
     
     /**
@@ -68,11 +76,13 @@ class DeskPROClient
      * 
      * @param string $helpdeskUrl
      * @param ClientInterface $client
+     * @param LoggerInterface $logger
      */
-    public function __construct($helpdeskUrl, ClientInterface $client = null)
+    public function __construct($helpdeskUrl, ClientInterface $client = null, LoggerInterface $logger = null)
     {
         $this->setHelpdeskUrl($helpdeskUrl);
-        $this->client = $client ?: new Client();
+        $this->setClient($client ?: new Client());
+        $this->setLogger($logger ?: new NullLogger());
     }
 
     /**
@@ -95,6 +105,14 @@ class DeskPROClient
     }
 
     /**
+     * @return ClientInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * @param ClientInterface $client
      * @return $this
      */
@@ -103,14 +121,6 @@ class DeskPROClient
         $this->client = $client;
         
         return $this;
-    }
-
-    /**
-     * @return ClientInterface
-     */
-    public function getClient()
-    {
-        return $this->client;
     }
 
     /**
@@ -266,10 +276,15 @@ class DeskPROClient
     protected function makeRequest($method, $endpoint, $body = null, array $headers = [])
     {
         $url = sprintf('%s%s/%s', $this->helpdeskUrl, self::API_PATH, trim($endpoint, '/'));
+        $headers = $this->makeHeaders($headers);
         if ($body !== null && !is_scalar($body)) {
             $body = json_encode($body);
         }
-        $request = new Request($method, $url, $this->makeHeaders($headers), $body);
+        $request = new Request($method, $url, $headers, $body);
+        $this->logger->debug(sprintf('DeskPROClient: %s %s',$method, $url), [
+            'headers' => $headers,
+            'body'    => $body
+        ]);
         
         return $request;
     }

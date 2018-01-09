@@ -10,7 +10,8 @@
   "license": "BSD-3-Clause",
   "require": {
     "php": ">=5.5",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "^6.3",
+    "psr/log": "^1.0"
   },
   "require-dev": {
     "phpspec/phpspec": "2.5.7"

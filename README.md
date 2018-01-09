@@ -56,3 +56,22 @@ $body = [
 $resp = $client->post('/articles', $body);
 print_r($resp->getData());
 ```
+
+Customizing Guzzle
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use GuzzleHttp\Client;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$guzzle = new Client([
+    'timeout' => 60
+]);
+$client = new DeskPROClient('http://deskpro-dev.com', $guzzle);
+$client->setAuthKey(1, 'dev-admin-code');
+
+$resp = $client->get('/articles');
+print_r($resp->getData());
+```
