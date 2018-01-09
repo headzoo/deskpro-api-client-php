@@ -90,4 +90,7 @@ $guzzle = new Client([
     'timeout' => 60
 ]);
 $client = new DeskPROClient('http://deskpro-dev.com', $guzzle);
+
+// or use the setter method.
+// $client->setClient($guzzle);
 ```
