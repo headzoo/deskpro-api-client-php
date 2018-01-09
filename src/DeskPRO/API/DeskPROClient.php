@@ -267,6 +267,21 @@ class DeskPROClient
     }
 
     /**
+     * @param array $headers
+     * @return array
+     */
+    protected function makeHeaders(array $headers = [])
+    {
+        if ($this->authToken) {
+            $headers['Authorization'] = sprintf('token %s', $this->authToken);
+        } else if ($this->authKey) {
+            $headers['Authorization'] = sprintf('key %s', $this->authKey);
+        }
+
+        return $headers;
+    }
+
+    /**
      * @param string $method
      * @param string $endpoint
      * @param mixed $body
@@ -287,21 +302,6 @@ class DeskPROClient
         ]);
         
         return $request;
-    }
-
-    /**
-     * @param array $headers
-     * @return array
-     */
-    protected function makeHeaders(array $headers = [])
-    {
-        if ($this->authToken) {
-            $headers['Authorization'] = sprintf('token %s', $this->authToken);
-        } else if ($this->authKey) {
-            $headers['Authorization'] = sprintf('key %s', $this->authKey);
-        }
-        
-        return $headers;
     }
 
     /**
