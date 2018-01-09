@@ -105,6 +105,55 @@ try {
 }
 ```
 
+Adding default headers:
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use DeskPRO\API\Exception\APIException;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$client = new DeskPROClient('http://deskpro-dev.com');
+$client->setAuthKey(1, 'dev-admin-code');
+$client->setDefaultHeaders([
+    'X-Custom-Value' => 'foo'
+]);
+
+try {
+    $resp = $client->get('/articles');
+    print_r($resp->getData());
+} catch (APIException $e) {
+    echo $e->getMessage();
+}
+```
+
+Logging:
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use DeskPRO\API\Exception\APIException;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$client = new DeskPROClient('http://deskpro-dev.com');
+$client->setAuthKey(1, 'dev-admin-code');
+
+$log = new Logger('name');
+$log->pushHandler(new StreamHandler('path/to/your.log', Logger::DEBUG));
+$client->setLogger($log);
+
+try {
+    $resp = $client->get('/articles');
+    print_r($resp->getData());
+} catch (APIException $e) {
+    echo $e->getMessage();
+}
+```
+
 
 ## Customizing Guzzle
 

@@ -73,6 +73,11 @@ class DeskPROClient
     protected $authKey;
 
     /**
+     * @var array
+     */
+    protected $defaultHeaders = [];
+
+    /**
      * Constructor
      * 
      * @param string $helpdeskUrl
@@ -144,6 +149,17 @@ class DeskPROClient
     public function setAuthKey($personId, $key)
     {
         $this->authKey = sprintf("%d:%s", $personId, $key);
+        
+        return $this;
+    }
+
+    /**
+     * @param array $defaultHeaders
+     * @return $this
+     */
+    public function setDefaultHeaders(array $defaultHeaders)
+    {
+        $this->defaultHeaders = $defaultHeaders;
         
         return $this;
     }
@@ -273,10 +289,13 @@ class DeskPROClient
      */
     protected function makeHeaders(array $headers = [])
     {
-        if ($this->authToken) {
-            $headers['Authorization'] = sprintf('token %s', $this->authToken);
-        } else if ($this->authKey) {
-            $headers['Authorization'] = sprintf('key %s', $this->authKey);
+        $headers = array_merge($this->defaultHeaders, $headers);
+        if (!isset($headers['Authorization'])) {
+            if ($this->authToken) {
+                $headers['Authorization'] = sprintf('token %s', $this->authToken);
+            } else if ($this->authKey) {
+                $headers['Authorization'] = sprintf('key %s', $this->authKey);
+            }
         }
 
         return $headers;
@@ -313,7 +332,7 @@ class DeskPROClient
     protected function makeResponse($body)
     {
         $decoded = json_decode($body, true);
-        if (!$decoded) {
+        if (!$decoded || (is_array($decoded) && !isset($decoded['data']))) {
             return $body;
         }
 
