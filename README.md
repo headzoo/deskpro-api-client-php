@@ -1,7 +1,7 @@
 DeskPRO API Client
 ==================
 
-Getting values:
+Basic usage:
 
 ```php
 <?php
@@ -10,13 +10,14 @@ use DeskPRO\API\DeskPROClient;
 include(__DIR__ . '/vendor/autoload.php');
 
 $client = new DeskPROClient('http://deskpro-dev.com');
-$client->setAuthKey(1, 'dev-admin-code');
+// $client->setAuthKey(1, 'dev-admin-code');
+// $client->setAuthToken(1, 'AWJ2BQ7WG589PQ6S862TCGY4');
 
 $resp = $client->get('/articles');
 print_r($resp->getData());
 ```
 
-Async getting values:
+Async usage:
 
 ```php
 <?php
