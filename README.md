@@ -15,6 +15,7 @@ $client = new DeskPROClient('http://deskpro-dev.com');
 
 $resp = $client->get('/articles');
 print_r($resp->getData());
+print_r($resp->getMeta());
 ```
 
 Async usage:
