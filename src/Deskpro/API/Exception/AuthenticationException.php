@@ -26,9 +26,9 @@
  * ~ Thanks, Everyone at Team DeskPRO
  */
 
-namespace DeskPRO\API\Exception;
+namespace Deskpro\API\Exception;
 
 /**
- * Base exception class for all request errors.
+ * Thrown when authentication fails.
  */
-class APIException extends \Exception {}
+class AuthenticationException extends APIException {}

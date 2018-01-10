@@ -27,8 +27,8 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use DeskPRO\API\URLInterpolator;
-use DeskPRO\API\URLInterpolatorInterface;
+use Deskpro\API\URLInterpolator;
+use Deskpro\API\URLInterpolatorInterface;
 
 /**
  * @coversDefaultClass \DeskPRO\API\URLInterpolator

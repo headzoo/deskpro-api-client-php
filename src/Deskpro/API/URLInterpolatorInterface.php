@@ -1,5 +1,5 @@
 <?php
-namespace DeskPRO\API;
+namespace Deskpro\API;
 
 /**
  * Modifies URLs by adding query strings and interpolates {placeholders}.

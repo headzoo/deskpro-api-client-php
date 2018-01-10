@@ -1,4 +1,4 @@
-DeskPRO API PHP Client
+Deskpro API PHP Client
 ======================
 
 * [Installing](#installing)
@@ -18,12 +18,15 @@ composer require deskpro-api-client-php
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
+
+// Set the ID of the user to authenticate, and either the auth
+// key or token.
 // $client->setAuthKey(1, 'dev-admin-code');
 // $client->setAuthToken(1, 'AWJ2BQ7WG589PQ6S862TCGY4');
 
@@ -40,13 +43,13 @@ Async usage:
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\APIResponse;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\APIResponse;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 $promise = $client->getAsync('/articles');
@@ -62,12 +65,12 @@ Posting values:
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 try {
@@ -88,12 +91,12 @@ Uploading a file:
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 try {
@@ -116,12 +119,12 @@ Interpolating URLs:
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 $params = [
@@ -145,12 +148,12 @@ Only applicable when the API returns an array.
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 try {
@@ -170,12 +173,12 @@ Custom headers may be sent with each request by passing them to the `setDefaultH
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 $client->setDefaultHeaders([
     'X-Custom-Value' => 'foo'
@@ -195,14 +198,14 @@ Requests may be logged by providing an instance of `Psr\Log\LoggerInterface` to 
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Exception\APIException;
+use Deskpro\API\DeskproClient;
+use Deskpro\API\Exception\APIException;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 $log = new Logger('name');
@@ -223,7 +226,7 @@ Guzzle is used to make HTTP requests. A default Guzzle client will be used unles
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
+use Deskpro\API\DeskproClient;
 use GuzzleHttp\Client;
 
 include(__DIR__ . '/vendor/autoload.php');
@@ -231,7 +234,7 @@ include(__DIR__ . '/vendor/autoload.php');
 $httpClient = new Client([
     'timeout' => 60
 ]);
-$client = new DeskPROClient('http://deskpro-dev.com', $httpClient);
+$client = new DeskproClient('http://deskpro-dev.com', $httpClient);
 
 // Or use the setter method.
 // $client->setHTTPClient($guzzle);
@@ -241,11 +244,11 @@ For debugging purposes, the RequestInterface, ResponseInterface, and RequestExce
 
 ```php
 <?php
-use DeskPRO\API\DeskPROClient;
+use Deskpro\API\DeskproClient;
 
 include(__DIR__ . '/vendor/autoload.php');
 
-$client = new DeskPROClient('http://deskpro-dev.com');
+$client = new DeskproClient('http://deskpro-dev.com');
 $client->get('/articles');
 
 print_r($client->getLastHTTPRequest());

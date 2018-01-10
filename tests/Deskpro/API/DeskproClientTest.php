@@ -27,7 +27,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use DeskPRO\API\DeskPROClient;
+use Deskpro\API\DeskproClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -37,7 +37,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * @coversDefaultClass \DeskPRO\API\DeskPROClient
  */
-class DeskPROClientTest extends TestCase
+class DeskproClientTest extends TestCase
 {
     /**
      * @covers ::setAuthToken
@@ -490,7 +490,7 @@ class DeskPROClientTest extends TestCase
 
     /**
      * @param Response[] $responses
-     * @return DeskPROClient
+     * @return DeskproClient
      */
     private function getMockClient(array $responses = [])
     {
@@ -501,7 +501,7 @@ class DeskPROClientTest extends TestCase
         $mock       = new MockHandler($responses);
         $handler    = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $handler]);
-        $client     = new DeskPROClient('http://deskpro-dev.com', $httpClient);
+        $client     = new DeskproClient('http://deskpro-dev.com', $httpClient);
         
         return $client;
     }

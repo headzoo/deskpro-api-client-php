@@ -26,7 +26,7 @@
  * ~ Thanks, Everyone at Team DeskPRO
  */
 
-namespace DeskPRO\API;
+namespace Deskpro\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -41,9 +41,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * Makes requests to the DeskPRO API.
+ * Makes requests to the Deskpro API.
  */
-class DeskPROClient
+class DeskproClient
 {
     use LoggerAwareTrait;
 
@@ -70,7 +70,7 @@ class DeskPROClient
     /**
      * Logs are prefixed with this string
      */
-    const LOG_PREFIX = 'DeskPROClient';
+    const LOG_PREFIX = 'DeskproClient';
     
     /**
      * @var string

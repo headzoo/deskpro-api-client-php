@@ -26,9 +26,9 @@
  * ~ Thanks, Everyone at Team DeskPRO
  */
 
-namespace DeskPRO\API\Exception;
+namespace Deskpro\API\Exception;
 
 /**
- * Thrown when an API endpoint or entity is not found on the remote server.
+ * Thrown when the API response cannot be decoded. (It's not a JSON string.)
  */
-class NotFoundException extends APIException {}
+class MalformedResponseException extends APIException {}

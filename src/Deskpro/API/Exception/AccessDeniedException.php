@@ -26,7 +26,7 @@
  * ~ Thanks, Everyone at Team DeskPRO
  */
 
-namespace DeskPRO\API\Exception;
+namespace Deskpro\API\Exception;
 
 /**
  * Thrown when requesting an endpoint which the user is not granted access.

@@ -26,7 +26,7 @@
  * ~ Thanks, Everyone at Team DeskPRO
  */
 
-namespace DeskPRO\API;
+namespace Deskpro\API;
 
 /**
  * Stores the response from the API.
