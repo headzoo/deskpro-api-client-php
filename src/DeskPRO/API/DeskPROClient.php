@@ -34,6 +34,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
@@ -95,6 +96,21 @@ class DeskPROClient
      * @var array
      */
     protected $defaultHeaders = [];
+
+    /**
+     * @var RequestInterface
+     */
+    protected $lastHTTPRequest;
+
+    /**
+     * @var ResponseInterface
+     */
+    protected $lastHTTPResponse;
+
+    /**
+     * @var RequestException
+     */
+    protected $lastHTTPRequestException;
 
     /**
      * Constructor
@@ -210,6 +226,42 @@ class DeskPROClient
         $this->defaultHeaders = $defaultHeaders;
         
         return $this;
+    }
+
+    /**
+     * Returns the request used during the last operation
+     * 
+     * Used to debug the underlying HTTP request.
+     * 
+     * @return RequestInterface
+     */
+    public function getLastHTTPRequest()
+    {
+        return $this->lastHTTPRequest;
+    }
+
+    /**
+     * Returns the response received from the last operation
+     * 
+     * Used to debug the underlying HTTP request.
+     * 
+     * @return ResponseInterface
+     */
+    public function getLastHTTPResponse()
+    {
+        return $this->lastHTTPResponse;
+    }
+
+    /**
+     * Returns any exception created during the last operation
+     * 
+     * Used to debug the underlying HTTP request.
+     * 
+     * @return RequestException
+     */
+    public function getLastHTTPRequestException()
+    {
+        return $this->lastHTTPRequestException;
     }
 
     /**
@@ -330,11 +382,13 @@ class DeskPROClient
     public function request($method, $endpoint, $body = null, array $headers = [])
     {
         try {
-            $req = $this->makeRequest($method, $endpoint, $body, $headers);
-            $res = $this->httpClient->send($req);
+            $this->lastHTTPRequestException = null;
+            $this->lastHTTPRequest  = $this->makeRequest($method, $endpoint, $body, $headers);
+            $this->lastHTTPResponse = $this->httpClient->send($this->lastHTTPRequest);
             
-            return $this->makeResponse($res->getBody());
+            return $this->makeResponse($this->lastHTTPResponse->getBody());
         } catch (RequestException $e) {
+            $this->lastHTTPRequestException = $e;
             throw $this->makeException($e->getResponse()->getBody());
         }
     }
@@ -351,12 +405,15 @@ class DeskPROClient
      */
     public function requestAsync($method, $endpoint, $body = null, array $headers = [])
     {
-        $req = $this->makeRequest($method, $endpoint, $body, $headers);
+        $this->lastHTTPRequestException = null;
+        $this->lastHTTPRequest = $this->makeRequest($method, $endpoint, $body, $headers);
         
-        return $this->httpClient->sendAsync($req)
+        return $this->httpClient->sendAsync($this->lastHTTPRequest)
             ->then(function(ResponseInterface $resp) {
+                $this->lastHTTPResponse = $resp;
                 return $this->makeResponse($resp->getBody());
             }, function (RequestException $e) {
+                $this->lastHTTPRequestException = $e;
                 throw $this->makeException($e->getResponse()->getBody());
             });
     }
@@ -431,22 +488,22 @@ class DeskPROClient
     protected function makeException($body)
     {
         $body = json_decode($body, true);
-        if ($body === null) {
-            return new Exception\MalformedResponseException('Could not JSON decode API response.');
+        if ($body === null || !isset($body['status']) || !isset($body['message'])) {
+            return new Exception\MalformedResponseException('Could not JSON decode API response.', 0);
         }
 
         switch($body['status']) {
             case 401:
-                return new Exception\AuthenticationException($body['message']);
+                return new Exception\AuthenticationException($body['message'], 401);
                 break;
             case 403:
-                return new Exception\AccessDeniedException($body['message']);
+                return new Exception\AccessDeniedException($body['message'], 403);
                 break;
             case 404:
-                return new Exception\NotFoundException($body['message']);
+                return new Exception\NotFoundException($body['message'], 404);
                 break;
         }
 
-        return new Exception\APIException($body['message']);
+        return new Exception\APIException($body['message'], (int)$body['status']);
     }
 }

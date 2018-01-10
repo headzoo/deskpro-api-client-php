@@ -32,6 +32,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * @coversDefaultClass \DeskPRO\API\DeskPROClient
@@ -360,7 +361,56 @@ class DeskPROClientTest extends TestCase
 
     /**
      * @covers ::get
+     * @covers ::getLastHTTPResponse
+     */
+    public function testGetLastHTTPResponse()
+    {
+        $lastResponse = new Response(200, [], json_encode([]));
+        $client = $this->getMockClient([
+            $lastResponse
+        ]);
+        $client->get('/articles');
+
+        $this->assertSame($lastResponse, $client->getLastHTTPResponse());
+    }
+
+    /**
+     * @covers ::get
+     * @covers ::getLastHTTPRequest
+     */
+    public function testGetLastHTTPRequest()
+    {
+        $client = $this->getMockClient();
+        $client->get('/articles');
+
+        $this->assertInstanceOf(RequestInterface::class, $client->getLastHTTPRequest());
+    }
+
+    /**
+     * @covers ::get
+     * @covers ::getLastHTTPRequestException
+     */
+    public function testGetLastHTTPRequestException()
+    {
+        $client = $this->getMockClient([
+            new Response(500, [], json_encode([]))
+        ]);
+        try {
+            $client->get('/articles');
+        } catch (\Exception $e) {}
+
+        $this->assertNotNull($client->getLastHTTPRequestException());
+
+        $client = $this->getMockClient();
+        $client->get('/articles');
+
+        $this->assertNull($client->getLastHTTPRequestException());
+    }
+
+    /**
+     * @covers ::get
      * @expectedException \DeskPRO\API\Exception\APIException
+     * @expectedExceptionCode 500
      */
     public function testGetThrowsAPIException()
     {
@@ -377,6 +427,7 @@ class DeskPROClientTest extends TestCase
     /**
      * @covers ::get
      * @expectedException \DeskPRO\API\Exception\MalformedResponseException
+     * @expectedExceptionCode 0
      */
     public function testGetThrowsMalformedResponseException()
     {
@@ -389,6 +440,7 @@ class DeskPROClientTest extends TestCase
     /**
      * @covers ::get
      * @expectedException \DeskPRO\API\Exception\AuthenticationException
+     * @expectedExceptionCode 401
      */
     public function testGetThrowsAuthenticationException()
     {
@@ -405,6 +457,7 @@ class DeskPROClientTest extends TestCase
     /**
      * @covers ::get
      * @expectedException \DeskPRO\API\Exception\AccessDeniedException
+     * @expectedExceptionCode 403
      */
     public function testGetThrowsAccessDeniedException()
     {
@@ -421,6 +474,7 @@ class DeskPROClientTest extends TestCase
     /**
      * @covers ::get
      * @expectedException \DeskPRO\API\Exception\NotFoundException
+     * @expectedExceptionCode 404
      */
     public function testGetThrowsNotFoundException()
     {
