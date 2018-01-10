@@ -112,6 +112,35 @@ try {
 }
 ```
 
+Interpolating URLs:
+
+```php
+<?php
+use DeskPRO\API\DeskPROClient;
+use DeskPRO\API\Exception\APIException;
+
+include(__DIR__ . '/vendor/autoload.php');
+
+$client = new DeskPROClient('http://deskpro-dev.com');
+$client->setAuthKey(1, 'dev-admin-code');
+
+try {
+    $params = [
+        'id'       => 5,
+        'parentId' => 101,
+        'limit'    => 25,
+        'offset'   => 100
+    ];
+    
+    // The params are interplated into the endpoint URL so it becomes:
+    // "/articles/101/5?limit=25&offset=100"
+    $resp = $client->get('/articles/{parentId}/{id}');
+} catch (APIException $e) {
+    echo $e->getMessage();
+}
+```
+
+
 Array access and iterator:
 
 The APIResponse class implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 

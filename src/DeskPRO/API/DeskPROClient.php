@@ -83,6 +83,11 @@ class DeskPROClient
     protected $httpClient;
 
     /**
+     * @var URLInterpolatorInterface
+     */
+    protected $urlInterpolator;
+
+    /**
      * @var string
      */
     protected $authToken;
@@ -123,6 +128,7 @@ class DeskPROClient
     {
         $this->setHelpdeskUrl($helpdeskUrl);
         $this->setHTTPClient($httpClient ?: new Client());
+        $this->setURLInterpolator(new URLInterpolator());
         $this->setLogger($logger ?: new NullLogger());
     }
 
@@ -170,6 +176,29 @@ class DeskPROClient
     public function setHTTPClient(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
+        
+        return $this;
+    }
+
+    /**
+     * Returns the object used to interpolate URLs
+     * 
+     * @return URLInterpolatorInterface
+     */
+    public function getURLInterpolator()
+    {
+        return $this->urlInterpolator;
+    }
+
+    /**
+     * Sets the object which will be used to interpolate URLs
+     * 
+     * @param URLInterpolatorInterface $urlInterpolator The interpolator object
+     * @return $this
+     */
+    public function setURLInterpolator(URLInterpolatorInterface $urlInterpolator)
+    {
+        $this->urlInterpolator = $urlInterpolator;
         
         return $this;
     }
@@ -268,25 +297,27 @@ class DeskPROClient
      * Sends a GET request to the API
      * 
      * @param string $endpoint The API endpoint (path)
+     * @param array  $params   Query and placeholder params
      * 
      * @return APIResponse
      * @throws Exception\APIException
      */
-    public function get($endpoint)
+    public function get($endpoint, array $params = [])
     {
-        return $this->request('GET', $endpoint);
+        return $this->request('GET', $endpoint, $params);
     }
 
     /**
      * Sends an asynchronous GET request to the API
      * 
      * @param string $endpoint The API endpoint (path)
+     * @param array  $params   Query and placeholder params
      * 
      * @return PromiseInterface
      */
-    public function getAsync($endpoint)
+    public function getAsync($endpoint, array $params = [])
     {
-        return $this->requestAsync('GET', $endpoint);
+        return $this->requestAsync('GET', $endpoint, $params);
     }
 
     /**
@@ -294,13 +325,14 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * 
      * @return APIResponse
      * @throws Exception\APIException
      */
-    public function post($endpoint, $body = null)
+    public function post($endpoint, $body = null, array $params = [])
     {
-        return $this->request('POST', $endpoint, $body);
+        return $this->request('POST', $endpoint, $body, $params);
     }
 
     /**
@@ -308,12 +340,13 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * 
      * @return PromiseInterface
      */
-    public function postAsync($endpoint, $body = null)
+    public function postAsync($endpoint, $body = null, array $params = [])
     {
-        return $this->requestAsync('POST', $endpoint, $body);
+        return $this->requestAsync('POST', $endpoint, $body, $params);
     }
 
     /**
@@ -321,13 +354,14 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * 
      * @return APIResponse
      * @throws Exception\APIException
      */
-    public function put($endpoint, $body = null)
+    public function put($endpoint, $body = null, array $params = [])
     {
-        return $this->request('PUT', $endpoint, $body);
+        return $this->request('PUT', $endpoint, $body, $params);
     }
 
     /**
@@ -335,37 +369,40 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * 
      * @return PromiseInterface
      */
-    public function putAsync($endpoint, $body = null)
+    public function putAsync($endpoint, $body = null, array $params = [])
     {
-        return $this->requestAsync('PUT', $endpoint, $body);
+        return $this->requestAsync('PUT', $endpoint, $body, $params);
     }
 
     /**
      * Sends a DELETE request to the API
      * 
      * @param string $endpoint The API endpoint (path)
+     * @param array  $params   Query and placeholder params
      * 
      * @return APIResponse
      * @throws Exception\APIException
      */
-    public function delete($endpoint)
+    public function delete($endpoint, array $params = [])
     {
-        return $this->request('DELETE', $endpoint);
+        return $this->request('DELETE', $endpoint, $params);
     }
 
     /**
      * Sends an asynchronous DELETE request to the API
      * 
      * @param string $endpoint The API endpoint (path)
+     * @param array  $params   Query and placeholder params
      * 
      * @return PromiseInterface
      */
-    public function deleteAsync($endpoint)
+    public function deleteAsync($endpoint, array $params = [])
     {
-        return $this->requestAsync('DELETE', $endpoint);
+        return $this->requestAsync('DELETE', $endpoint, $params);
     }
 
     /**
@@ -374,13 +411,16 @@ class DeskPROClient
      * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * @param array  $headers  Additional headers to send with the request
-     * 
+     *
      * @return APIResponse
      * @throws Exception\APIException
      */
-    public function request($method, $endpoint, $body = null, array $headers = [])
+    public function request($method, $endpoint, $body = null, array $params = [], array $headers = [])
     {
+        $endpoint = $this->urlInterpolator->interpolate($endpoint, $params);
+        
         try {
             $this->lastHTTPRequestException = null;
             $this->lastHTTPRequest  = $this->makeRequest($method, $endpoint, $body, $headers);
@@ -399,12 +439,14 @@ class DeskPROClient
      * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
+     * @param array  $params   Query and placeholder params
      * @param array  $headers  Additional headers to send with the request
      * 
      * @return PromiseInterface
      */
-    public function requestAsync($method, $endpoint, $body = null, array $headers = [])
+    public function requestAsync($method, $endpoint, $body = null, array $params = [], array $headers = [])
     {
+        $endpoint = $this->urlInterpolator->interpolate($endpoint, $params);
         $this->lastHTTPRequestException = null;
         $this->lastHTTPRequest = $this->makeRequest($method, $endpoint, $body, $headers);
         
