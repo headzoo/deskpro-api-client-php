@@ -51,7 +51,7 @@ try {
 ```php
 <?php
 use Deskpro\API\DeskproClient;
-use Deskpro\API\APIResponse;
+use Deskpro\API\APIResponseInterface;
 use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
@@ -60,7 +60,7 @@ $client = new DeskproClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 $promise = $client->getAsync('/articles');
-$promise->then(function(APIResponse $resp) {
+$promise->then(function(APIResponseInterface $resp) {
     print_r($resp->getData());
 }, function(APIException $err) {
     echo $err->getMessage();
@@ -149,7 +149,7 @@ $client->get('/articles/{parentId}/{id}', $params);
 
 #### Array access
 
-The APIResponse class implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
+The APIResponseInterface interface implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
 [Iterator](http://php.net/manual/en/class.iterator.php), and [Countable](http://php.net/manual/en/class.countable.php).
 Only applicable when the API returns an array.
 

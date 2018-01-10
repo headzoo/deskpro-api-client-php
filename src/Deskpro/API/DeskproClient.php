@@ -31,7 +31,6 @@ namespace Deskpro\API;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
@@ -43,7 +42,7 @@ use Psr\Log\NullLogger;
 /**
  * Makes requests to the Deskpro API.
  */
-class DeskproClient
+class DeskproClient implements DeskproClientInterface
 {
     use LoggerAwareTrait;
 
@@ -133,21 +132,15 @@ class DeskproClient
     }
 
     /**
-     * Returns the base URL to the DeskPRO instance
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function getHelpdeskUrl()
     {
         return $this->helpdeskUrl;
     }
-    
+
     /**
-     * Sets the base URL to the DeskPRO instance
-     * 
-     * @param string $helpdeskUrl The base URL to the DeskPRO instance
-     * 
-     * @return $this
+     * {@inheritdoc}
      */
     public function setHelpdeskUrl($helpdeskUrl)
     {
@@ -157,9 +150,7 @@ class DeskproClient
     }
 
     /**
-     * Returns the HTTP client used to make requests
-     * 
-     * @return ClientInterface
+     * {@inheritdoc}
      */
     public function getHTTPClient()
     {
@@ -167,11 +158,7 @@ class DeskproClient
     }
 
     /**
-     * Sets the HTTP client used to make requests
-     * 
-     * @param ClientInterface $httpClient HTTP client used to make requests
-     * 
-     * @return $this
+     * {@inheritdoc}
      */
     public function setHTTPClient(ClientInterface $httpClient)
     {
@@ -181,9 +168,7 @@ class DeskproClient
     }
 
     /**
-     * Returns the object used to interpolate URLs
-     * 
-     * @return URLInterpolatorInterface
+     * {@inheritdoc}
      */
     public function getURLInterpolator()
     {
@@ -191,10 +176,7 @@ class DeskproClient
     }
 
     /**
-     * Sets the object which will be used to interpolate URLs
-     * 
-     * @param URLInterpolatorInterface $urlInterpolator The interpolator object
-     * @return $this
+     * {@inheritdoc}
      */
     public function setURLInterpolator(URLInterpolatorInterface $urlInterpolator)
     {
@@ -204,12 +186,7 @@ class DeskproClient
     }
 
     /**
-     * Sets the person ID and authentication token
-     * 
-     * @param int    $personId The ID of the person being authenticated
-     * @param string $token    The authentication token
-     * 
-     * @return $this
+     * {@inheritdoc}
      */
     public function setAuthToken($personId, $token)
     {
@@ -219,12 +196,7 @@ class DeskproClient
     }
 
     /**
-     * Sets the person ID and authentication key
-     * 
-     * @param int    $personId The ID of the person being authenticated
-     * @param string $key      The authentication key
-     * 
-     * @return $this
+     * {@inheritdoc}
      */
     public function setAuthKey($personId, $key)
     {
@@ -234,9 +206,7 @@ class DeskproClient
     }
 
     /**
-     * Returns the headers sent with each request
-     * 
-     * @return array
+     * {@inheritdoc}
      */
     public function getDefaultHeaders()
     {
@@ -244,11 +214,7 @@ class DeskproClient
     }
 
     /**
-     * Sets the headers sent with each request
-     * 
-     * @param array $defaultHeaders The headers to send
-     * 
-     * @return $this
+     * {@inheritdoc}
      */
     public function setDefaultHeaders(array $defaultHeaders)
     {
@@ -258,11 +224,7 @@ class DeskproClient
     }
 
     /**
-     * Returns the request used during the last operation
-     * 
-     * Used to debug the underlying HTTP request.
-     * 
-     * @return RequestInterface
+     * {@inheritdoc}
      */
     public function getLastHTTPRequest()
     {
@@ -270,11 +232,7 @@ class DeskproClient
     }
 
     /**
-     * Returns the response received from the last operation
-     * 
-     * Used to debug the underlying HTTP request.
-     * 
-     * @return ResponseInterface
+     * {@inheritdoc}
      */
     public function getLastHTTPResponse()
     {
@@ -282,11 +240,7 @@ class DeskproClient
     }
 
     /**
-     * Returns any exception created during the last operation
-     * 
-     * Used to debug the underlying HTTP request.
-     * 
-     * @return RequestException
+     * {@inheritdoc}
      */
     public function getLastHTTPRequestException()
     {
@@ -294,13 +248,7 @@ class DeskproClient
     }
 
     /**
-     * Sends a GET request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return APIResponse
-     * @throws Exception\APIException
+     * {@inheritdoc}
      */
     public function get($endpoint, array $params = [])
     {
@@ -308,12 +256,7 @@ class DeskproClient
     }
 
     /**
-     * Sends an asynchronous GET request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return PromiseInterface
+     * {@inheritdoc}
      */
     public function getAsync($endpoint, array $params = [])
     {
@@ -321,14 +264,7 @@ class DeskproClient
     }
 
     /**
-     * Sends a POST request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return APIResponse
-     * @throws Exception\APIException
+     * {@inheritdoc}
      */
     public function post($endpoint, $body = null, array $params = [])
     {
@@ -336,13 +272,7 @@ class DeskproClient
     }
 
     /**
-     * Sends an asynchronous POST request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return PromiseInterface
+     * {@inheritdoc}
      */
     public function postAsync($endpoint, $body = null, array $params = [])
     {
@@ -350,14 +280,7 @@ class DeskproClient
     }
 
     /**
-     * Sends a PUT request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return APIResponse
-     * @throws Exception\APIException
+     * {@inheritdoc}
      */
     public function put($endpoint, $body = null, array $params = [])
     {
@@ -365,13 +288,7 @@ class DeskproClient
     }
 
     /**
-     * Sends an asynchronous PUT request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return PromiseInterface
+     * {@inheritdoc}
      */
     public function putAsync($endpoint, $body = null, array $params = [])
     {
@@ -379,13 +296,7 @@ class DeskproClient
     }
 
     /**
-     * Sends a DELETE request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return APIResponse
-     * @throws Exception\APIException
+     * {@inheritdoc}
      */
     public function delete($endpoint, array $params = [])
     {
@@ -393,12 +304,7 @@ class DeskproClient
     }
 
     /**
-     * Sends an asynchronous DELETE request to the API
-     * 
-     * @param string $endpoint The API endpoint (path)
-     * @param array  $params   Query and placeholder params
-     * 
-     * @return PromiseInterface
+     * {@inheritdoc}
      */
     public function deleteAsync($endpoint, array $params = [])
     {
@@ -406,16 +312,7 @@ class DeskproClient
     }
 
     /**
-     * Sends a request to the API
-     * 
-     * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * @param array  $headers  Additional headers to send with the request
-     *
-     * @return APIResponse
-     * @throws Exception\APIException
+     * {@inheritdoc}
      */
     public function request($method, $endpoint, $body = null, array $params = [], array $headers = [])
     {
@@ -434,15 +331,7 @@ class DeskproClient
     }
 
     /**
-     * Sends an asynchronous request to the API
-     *
-     * @param string $method   The HTTP method to use, e.g. 'GET', 'POST', etc
-     * @param string $endpoint The API endpoint (path)
-     * @param mixed  $body     Values sent in the request body
-     * @param array  $params   Query and placeholder params
-     * @param array  $headers  Additional headers to send with the request
-     * 
-     * @return PromiseInterface
+     * {@inheritdoc}
      */
     public function requestAsync($method, $endpoint, $body = null, array $params = [], array $headers = [])
     {
@@ -507,7 +396,7 @@ class DeskproClient
     /**
      * @param string $body
      * 
-     * @return APIResponse|mixed
+     * @return APIResponseInterface|mixed
      */
     protected function makeResponse($body)
     {

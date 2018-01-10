@@ -31,7 +31,7 @@ namespace Deskpro\API;
 /**
  * Stores the response from the API.
  */
-class APIResponse implements \ArrayAccess, \Iterator, \Countable
+class APIResponse implements APIResponseInterface
 {
     /**
      * @var array
@@ -76,7 +76,7 @@ class APIResponse implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -84,7 +84,7 @@ class APIResponse implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getMeta()
     {
@@ -92,7 +92,7 @@ class APIResponse implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getLinked()
     {
