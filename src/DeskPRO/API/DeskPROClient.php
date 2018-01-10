@@ -304,7 +304,7 @@ class DeskPROClient
      */
     public function get($endpoint, array $params = [])
     {
-        return $this->request('GET', $endpoint, $params);
+        return $this->request('GET', $endpoint, null, $params);
     }
 
     /**
@@ -317,7 +317,7 @@ class DeskPROClient
      */
     public function getAsync($endpoint, array $params = [])
     {
-        return $this->requestAsync('GET', $endpoint, $params);
+        return $this->requestAsync('GET', $endpoint, null, $params);
     }
 
     /**
@@ -389,7 +389,7 @@ class DeskPROClient
      */
     public function delete($endpoint, array $params = [])
     {
-        return $this->request('DELETE', $endpoint, $params);
+        return $this->request('DELETE', $endpoint, null, $params);
     }
 
     /**
@@ -402,7 +402,7 @@ class DeskPROClient
      */
     public function deleteAsync($endpoint, array $params = [])
     {
-        return $this->requestAsync('DELETE', $endpoint, $params);
+        return $this->requestAsync('DELETE', $endpoint, null, $params);
     }
 
     /**
