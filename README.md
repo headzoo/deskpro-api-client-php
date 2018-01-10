@@ -1,13 +1,20 @@
 DeskPRO API PHP Client
 ======================
 
+* [Installing](#installing)
+* [Basic Usage](#basic-usage)
+* [Default Headers](#default-headers)
+* [Logging](#logging)
+* [Guzzle](#guzzle)
+* [Testing](#testing)
+
 ## Installing
 
 ```
 composer require deskpro-api-client-php
 ```
 
-## Basic usage
+## Basic Usage
 
 ```php
 <?php
@@ -133,7 +140,7 @@ try {
 ```
 
 
-## Adding default headers
+## Default Headers
 Custom headers may be sent with each request by passing them to the `setDefaultHeaders()` method.
 
 ```php
@@ -156,6 +163,7 @@ try {
     echo $e->getMessage();
 }
 ```
+
 
 ## Logging
 Requests may be logged by providing an instance of `Psr\Log\LoggerInterface` to the `setLogger()` method.
@@ -219,6 +227,7 @@ print_r($client->getLastHTTPRequest());
 print_r($client->getLastHTTPResponse());
 print_r($client->getLastHTTPRequestException());
 ```
+
 
 ## Testing
 The composer "test" script runs the PHPUnit tests.
