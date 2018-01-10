@@ -124,20 +124,16 @@ include(__DIR__ . '/vendor/autoload.php');
 $client = new DeskPROClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
-try {
-    $params = [
-        'id'       => 5,
-        'parentId' => 101,
-        'limit'    => 25,
-        'offset'   => 100
-    ];
-    
-    // The params are interplated into the endpoint URL so it becomes:
-    // "/articles/101/5?limit=25&offset=100"
-    $resp = $client->get('/articles/{parentId}/{id}');
-} catch (APIException $e) {
-    echo $e->getMessage();
-}
+$params = [
+    'id'       => 5,
+    'parentId' => 101,
+    'limit'    => 25,
+    'offset'   => 100
+];
+
+// The params are interplated into the endpoint URL so it becomes:
+// "/articles/101/5?limit=25&offset=100"
+$client->get('/articles/{parentId}/{id}', $params);
 ```
 
 
