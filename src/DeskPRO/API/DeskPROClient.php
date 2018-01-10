@@ -30,7 +30,6 @@ namespace DeskPRO\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
@@ -335,7 +334,7 @@ class DeskPROClient
             $res = $this->httpClient->send($req);
             
             return $this->makeResponse($res->getBody());
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             throw $this->makeException($e->getResponse()->getBody());
         }
     }
@@ -414,8 +413,11 @@ class DeskPROClient
     protected function makeResponse($body)
     {
         $decoded = json_decode($body, true);
-        if (!$decoded || (is_array($decoded) && !isset($decoded['data']))) {
+        if ($decoded === null) {
             return $body;
+        }
+        if (is_array($decoded) && (!isset($decoded['data']) || !isset($decoded['meta']) || !isset($decoded['linked']))) {
+            return $decoded;
         }
 
         return new Response($decoded['data'], $decoded['meta'], $decoded['linked']);
@@ -429,7 +431,7 @@ class DeskPROClient
     protected function makeException($body)
     {
         $body = json_decode($body, true);
-        if ($body === false) {
+        if ($body === null) {
             return new Exception\MalformedResponseException('Could not JSON decode API response.');
         }
 
