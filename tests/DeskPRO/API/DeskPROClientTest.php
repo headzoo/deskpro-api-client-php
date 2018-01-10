@@ -28,7 +28,6 @@
 
 use PHPUnit\Framework\TestCase;
 use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Response as DeskPROResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;

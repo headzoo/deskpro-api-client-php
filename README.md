@@ -34,7 +34,7 @@ Async usage:
 ```php
 <?php
 use DeskPRO\API\DeskPROClient;
-use DeskPRO\API\Response;
+use DeskPRO\API\APIResponse;
 use DeskPRO\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
@@ -43,7 +43,7 @@ $client = new DeskPROClient('http://deskpro-dev.com');
 $client->setAuthKey(1, 'dev-admin-code');
 
 $promise = $client->getAsync('/articles');
-$promise->then(function(Response $resp) {
+$promise->then(function(APIResponse $resp) {
     print_r($resp->getData());
 }, function(APIException $err) {
     echo $err->getMessage();
@@ -107,7 +107,7 @@ try {
 
 Array access and iterator:
 
-The API response implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
+The APIResponse class implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
 [Iterator](http://php.net/manual/en/class.iterator.php), and [Countable](http://php.net/manual/en/class.countable.php).
 Only applicable when the API returns an array.
 

@@ -217,7 +217,7 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * 
-     * @return Response
+     * @return APIResponse
      * @throws Exception\APIException
      */
     public function get($endpoint)
@@ -243,7 +243,7 @@ class DeskPROClient
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
      * 
-     * @return Response
+     * @return APIResponse
      * @throws Exception\APIException
      */
     public function post($endpoint, $body = null)
@@ -270,7 +270,7 @@ class DeskPROClient
      * @param string $endpoint The API endpoint (path)
      * @param mixed  $body     Values sent in the request body
      * 
-     * @return Response
+     * @return APIResponse
      * @throws Exception\APIException
      */
     public function put($endpoint, $body = null)
@@ -296,7 +296,7 @@ class DeskPROClient
      * 
      * @param string $endpoint The API endpoint (path)
      * 
-     * @return Response
+     * @return APIResponse
      * @throws Exception\APIException
      */
     public function delete($endpoint)
@@ -324,7 +324,7 @@ class DeskPROClient
      * @param mixed  $body     Values sent in the request body
      * @param array  $headers  Additional headers to send with the request
      * 
-     * @return Response
+     * @return APIResponse
      * @throws Exception\APIException
      */
     public function request($method, $endpoint, $body = null, array $headers = [])
@@ -408,7 +408,7 @@ class DeskPROClient
     /**
      * @param string $body
      * 
-     * @return Response|mixed
+     * @return APIResponse|mixed
      */
     protected function makeResponse($body)
     {
@@ -420,7 +420,7 @@ class DeskPROClient
             return $decoded;
         }
 
-        return new Response($decoded['data'], $decoded['meta'], $decoded['linked']);
+        return new APIResponse($decoded['data'], $decoded['meta'], $decoded['linked']);
     }
 
     /**

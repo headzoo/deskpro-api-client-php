@@ -31,7 +31,7 @@ namespace DeskPRO\API;
 /**
  * Stores the response from the API.
  */
-class Response implements \ArrayAccess, \Iterator, \Countable
+class APIResponse implements \ArrayAccess, \Iterator, \Countable
 {
     /**
      * @var array
