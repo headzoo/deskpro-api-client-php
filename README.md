@@ -40,7 +40,7 @@ try {
 }
 ```
 
-Async usage:
+#### Async usage
 
 ```php
 <?php
@@ -62,7 +62,7 @@ $promise->then(function(APIResponse $resp) {
 $promise->wait();
 ```
 
-Posting values:
+#### Posting values
 
 ```php
 <?php
@@ -88,7 +88,7 @@ try {
 }
 ```
 
-Uploading a file:
+#### Uploading a file
 
 ```php
 <?php
@@ -116,7 +116,7 @@ try {
 }
 ```
 
-Interpolating URLs:
+#### Interpolating URLs
 
 ```php
 <?php
@@ -141,7 +141,7 @@ $client->get('/articles/{parentId}/{id}', $params);
 ```
 
 
-Array access and iterator:
+#### Array access
 
 The APIResponse class implements [ArrayAccess](http://php.net/manual/en/class.arrayaccess.php), 
 [Iterator](http://php.net/manual/en/class.iterator.php), and [Countable](http://php.net/manual/en/class.countable.php).
