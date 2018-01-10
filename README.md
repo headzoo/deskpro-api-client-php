@@ -11,7 +11,7 @@ Deskpro API PHP Client
 ## Installing
 
 ```
-composer require deskpro-api-client-php
+composer require deskpro/deskpro-api-client-php
 ```
 
 ## Basic Usage

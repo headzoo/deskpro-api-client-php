@@ -1,12 +1,12 @@
 {
-  "name": "deskpro/api-client-php",
-  "description": "PHP API client for use with the Deskpro v2 API",
+  "name": "deskpro/deskpro-api-client-php",
+  "description": "PHP client for use with the Deskpro API.",
   "type": "library",
   "keywords": [
     "deskpro",
     "api"
   ],
-  "homepage": "https://github.com/deskpro/api-client-php",
+  "homepage": "https://github.com/deskpro/deskpro-api-client-php",
   "license": "BSD-3-Clause",
   "scripts": {
     "test": "phpunit"
