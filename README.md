@@ -23,6 +23,7 @@ use Deskpro\API\Exception\APIException;
 
 include(__DIR__ . '/vendor/autoload.php');
 
+// Create a new client with the URL to your Deskpro instance.
 $client = new DeskproClient('http://deskpro-dev.com');
 
 // Set the ID of the user to authenticate, and either the auth
