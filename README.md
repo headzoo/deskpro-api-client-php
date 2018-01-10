@@ -8,6 +8,11 @@ Deskpro API PHP Client
 * [Guzzle](#guzzle)
 * [Testing](#testing)
 
+## Requirements
+
+* PHP 5.5+ with Composer
+* Guzzlehttp/guzzle >= 6.3
+
 ## Installing
 
 ```
